@@ -1,0 +1,49 @@
+{
+  "namespace": "org.schema_registry_test_app.avro",
+  "type": "record",
+  "name": "AvroTest",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "name": "Uuid",
+        "type": "fixed",
+        "size": 16
+      }
+    },
+    {
+      "name": "by",
+      "type": {
+        "name": "Language",
+        "type": "enum",
+        "symbols": [
+          "Java",
+          "Rust",
+          "Js",
+          "Python",
+          "Go",
+          "C"
+        ]
+      }
+    },
+    {
+      "name": "counter",
+      "type": "long"
+    },
+    {
+      "name": "input",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "results",
+      "type": {
+        "type": "array",
+        "items": "org.schema_registry_test_app.avro.Result"
+      }
+    }
+  ]
+}

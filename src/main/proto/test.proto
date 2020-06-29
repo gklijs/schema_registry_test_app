@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package org.schema_registry_test_app.proto;
+import "result.proto";
+
+message ProtoTest {
+  bytes id = 1;
+  enum Language {
+      Java = 0;
+      Rust = 1;
+      Js = 2;
+      Python = 3;
+      Go = 4;
+      C = 5;
+  }
+  Language by = 2;
+  int64 counter = 3;
+  string input = 4;
+  repeated Result results = 5;
+}

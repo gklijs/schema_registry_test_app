@@ -1,0 +1,15 @@
+{
+  "namespace": "org.schema_registry_test_app.avro",
+  "type": "record",
+  "name": "Result",
+  "fields": [
+    {
+      "name": "up",
+      "type": "string"
+    },
+    {
+      "name": "down",
+      "type": "string"
+    }
+  ]
+}
