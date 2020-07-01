@@ -16,8 +16,9 @@
     <maven.compiler.source>14</maven.compiler.source>
     <maven.compiler.target>14</maven.compiler.target>
 
-    <confluent-platform.version>5.5.0</confluent-platform.version>
+    <confluent-platform.version>5.5.1</confluent-platform.version>
 
+    <avro-maven-plugin.version>1.9.2</avro-maven-plugin.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
     <protobuf-maven.version>0.6.1</protobuf-maven.version>
@@ -30,6 +31,14 @@
       <url>https://packages.confluent.io/maven</url>
     </repository>
   </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>confluent</id>
+      <name>confluent</name>
+      <url>https://packages.confluent.io/maven</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <dependencies>
     <dependency>
@@ -74,8 +83,59 @@
         <version>${maven-compiler-plugin.version}</version>
       </plugin>
       <plugin>
+        <groupId>io.confluent</groupId>
+        <artifactId>kafka-schema-registry-maven-plugin</artifactId>
+        <version>${confluent-platform.version}</version>
+        <configuration>
+          <schemaRegistryUrls>
+            <param>http://127.0.0.1:8081</param>
+          </schemaRegistryUrls>
+          <outputDirectory>schemas</outputDirectory>
+          <subjects>
+            <avro-result>src/main/avro/result.avsc</avro-result>
+            <testavro-value>src/main/avro/schemas.avsc</testavro-value>
+            <result.proto>src/main/proto/result.proto</result.proto>
+            <testproto-value>src/main/proto/test.proto</testproto-value>
+            <result.json>src/main/json/result.json</result.json>
+            <testjson-value-n>src/main/json/jsontest.json</testjson-value-n>
+          </subjects>
+          <schemaTypes>
+            <avro-result>AVRO</avro-result>
+            <testavro-value>AVRO</testavro-value>
+            <result.proto>PROTOBUF</result.proto>
+            <testproto-value>PROTOBUF</testproto-value>
+            <result.json>JSON</result.json>
+            <testjson-value-n>JSON</testjson-value-n>
+          </schemaTypes>
+          <references>
+            <testavro-value>
+              <reference>
+                <name>org.schema_registry_test_app.avro.Result</name>
+                <subject>avro-result</subject>
+              </reference>
+            </testavro-value>
+            <testproto-value>
+              <reference>
+                <name>result.proto</name>
+                <subject>result.proto</subject>
+              </reference>
+            </testproto-value>
+            <testjson-value-n>
+              <reference>
+                <name>result.json</name>
+                <subject>result.json</subject>
+              </reference>
+            </testjson-value-n>
+          </references>
+        </configuration>
+        <goals>
+          <goal>register</goal>
+        </goals>
+      </plugin>
+      <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>
+        <version>${avro-maven-plugin.version}</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -105,6 +165,33 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <protocExecutable>protoc</protocExecutable>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jsonschema2pojo</groupId>
+        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+        <version>1.0.2</version>
+        <configuration>
+          <sourceDirectory>src/main/json</sourceDirectory>
+          <targetPackage>org.schema_registry_test_app.json</targetPackage>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <mainClass>org.schema_registry_test_app.App</mainClass>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Json Test",
+  "type": "object",
+  "additionalProperties": false,
+  "javaType": "org.schema_registry_test_app.json.JsonTest",
+  "properties": {
+    "id": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "by": {
+      "type": "string",
+      "enum": [
+        "Java",
+        "Rust",
+        "Js",
+        "Python",
+        "Go",
+        "C"
+      ]
+    },
+    "counter": {
+      "type": "integer"
+    },
+    "input": {
+      "type": "string"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "$ref": "result.json"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "by",
+    "counter",
+    "input",
+    "results"
+  ]
+}

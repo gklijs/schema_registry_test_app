@@ -3,6 +3,7 @@ package org.schema_registry_test_app.json;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
 import org.schema_registry_test_app.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -12,8 +13,29 @@ public class TestJson {
         //prevent instantiation
     }
 
+    private static List<Integer> idList(){
+        List<Integer> integers = new ArrayList<>();
+        for(byte b : Utils.uuidBytes()){
+            integers.add((int) b);
+        }
+        return integers;
+    }
+
+    private static List<Result> resultList(){
+        Result result = new Result();
+        result.setUp("STRING");
+        result.setDown("string");
+        return List.of(result);
+    }
+
     private static JsonTest testValue() {
-        return new JsonTest(Utils.uuidBytes(), Language.Java, 1L, "String", List.of(new Result("STRING", "string")));
+        JsonTest jsonTest = new JsonTest();
+        jsonTest.setId(idList());
+        jsonTest.setBy(JsonTest.By.JAVA);
+        jsonTest.setCounter(1);
+        jsonTest.setInput("String");
+        jsonTest.setResults(resultList());
+        return jsonTest;
     }
 
     @SuppressWarnings("unchecked")

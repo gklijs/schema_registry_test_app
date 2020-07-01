@@ -14,8 +14,7 @@ public class App {
     private static final Logger LOGGER;
 
     static {
-        String path = Objects.requireNonNull(App.class.getClassLoader().getResource("logging.properties"))
-                             .getFile();
+        String path = Objects.requireNonNull(App.class.getClassLoader().getResource("logging.properties")).getFile();
         System.setProperty("java.util.logging.config.file", path);
         LOGGER = LoggerFactory.getLogger(App.class);
     }
