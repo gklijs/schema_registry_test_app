@@ -5,11 +5,10 @@ For now it just write a test message used the three by default supported formats
 The topics it uses respectively are testavro, testproto and testjson. You can run the app with `mvn exec:java`, from
 your ide or as jar.
 
+It's using a lot of 'sensible defaults', that are not changeable at the moment, like the schema registry url.
+Please let me know if you want something to be configurable, for now the simpler the better.
+
 ## Register the schema's
 
-It should be possible to register the schema's using the schema registry plugin. This can be triggered by running
-`mvn schema-registry:register` in the root of the project. This doesn't work well through.
-- Avro: works as expected, will not create new versions or subjects with the producer.
-- Proto: will create a new version of `testproto-value` subject. Seems almost identical to the one stored from the plugin.
-- Json: for now changed the subject to `testjson-value-n` in the plugin configuration. Otherwise wants to update the
-`testjson-value` subject with one that is incompatible, leading to an error when running the program.
+You should register the schema's using the schema registry plugin before use, as it's explicitly configured not to auto register schema's.
+This can be triggered by running `mvn schema-registry:register` in the root of the project.

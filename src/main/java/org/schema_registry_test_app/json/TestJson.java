@@ -13,10 +13,10 @@ public class TestJson {
         //prevent instantiation
     }
 
-    private static List<Integer> idList(){
-        List<Integer> integers = new ArrayList<>();
+    private static List<Long> idList(){
+        List<Long> integers = new ArrayList<>();
         for(byte b : Utils.uuidBytes()){
-            integers.add((int) b);
+            integers.add((long) b);
         }
         return integers;
     }
@@ -32,7 +32,7 @@ public class TestJson {
         JsonTest jsonTest = new JsonTest();
         jsonTest.setId(idList());
         jsonTest.setBy(JsonTest.By.JAVA);
-        jsonTest.setCounter(1);
+        jsonTest.setCounter(1L);
         jsonTest.setInput("String");
         jsonTest.setResults(resultList());
         return jsonTest;

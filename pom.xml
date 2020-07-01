@@ -97,7 +97,7 @@
             <result.proto>src/main/proto/result.proto</result.proto>
             <testproto-value>src/main/proto/test.proto</testproto-value>
             <result.json>src/main/json/result.json</result.json>
-            <testjson-value-n>src/main/json/jsontest.json</testjson-value-n>
+            <testjson-value>src/main/json/jsontest.json</testjson-value>
           </subjects>
           <schemaTypes>
             <avro-result>AVRO</avro-result>
@@ -105,7 +105,7 @@
             <result.proto>PROTOBUF</result.proto>
             <testproto-value>PROTOBUF</testproto-value>
             <result.json>JSON</result.json>
-            <testjson-value-n>JSON</testjson-value-n>
+            <testjson-value>JSON</testjson-value>
           </schemaTypes>
           <references>
             <testavro-value>
@@ -120,12 +120,12 @@
                 <subject>result.proto</subject>
               </reference>
             </testproto-value>
-            <testjson-value-n>
+            <testjson-value>
               <reference>
                 <name>result.json</name>
                 <subject>result.json</subject>
               </reference>
-            </testjson-value-n>
+            </testjson-value>
           </references>
         </configuration>
         <goals>
@@ -176,6 +176,9 @@
         <configuration>
           <sourceDirectory>src/main/json</sourceDirectory>
           <targetPackage>org.schema_registry_test_app.json</targetPackage>
+          <includeJsr303Annotations>true</includeJsr303Annotations>
+          <useLongIntegers>true</useLongIntegers>
+          <annotationStyle>jackson2</annotationStyle>
         </configuration>
         <executions>
           <execution>
