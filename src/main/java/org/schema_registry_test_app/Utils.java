@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -26,9 +27,21 @@ public class Utils {
     public static final String TEST_TOPIC_AVRO = "testavro";
     public static final String TEST_TOPIC_PROTO = "testproto";
     public static final String TEST_TOPIC_JSON = "testjson";
+    public static final String SCHEMA_REGISTRY_URL = getSchemaRegistryUrl();
+    public static final String BOOTSTRAP_SERVERS = getBootstrapServers();
 
     private Utils() {
         //prevent instantiation
+    }
+
+    private static String getSchemaRegistryUrl(){
+        String fromEnv = System.getenv("SCHEMA_REGISTRY_URL");
+        return Objects.requireNonNullElse(fromEnv, "http://127.0.0.1:8081");
+    }
+
+    private static String getBootstrapServers(){
+        String fromEnv = System.getenv("BOOTSTRAP_SERVERS");
+        return Objects.requireNonNullElse(fromEnv, "localhost:9092");
     }
 
     public static byte[] uuidBytes() {
@@ -39,7 +52,7 @@ public class Utils {
         return buffer.array();
     }
 
-    public static <T, O, S extends Serializer<O>> void produceOne(T item,
+    public static <T extends O, O, S extends Serializer<O>> void produceOne(T item,
             Class<S> serializerClass) throws ExecutionException, InterruptedException {
         if (item instanceof SpecificRecord) {
             produceOne(item, serializerClass, TEST_TOPIC_AVRO);
@@ -50,7 +63,7 @@ public class Utils {
         }
     }
 
-    public static <T, O, S extends Serializer<O>> void produceOne(T item, Class<S> serializerClass,
+    public static <T extends O, O, S extends Serializer<O>> void produceOne(T item, Class<S> serializerClass,
             String topic) throws ExecutionException, InterruptedException {
         try (Producer<String, T> producer = new KafkaProducer<>(producerProperties(serializerClass))) {
             var record = new ProducerRecord<>(topic, TEST_KEY, item);
@@ -62,12 +75,12 @@ public class Utils {
 
     private static <O, S extends Serializer<O>> Properties producerProperties(Class<S> serializerClass) {
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, serializerClass.getName());
         props.put(AbstractKafkaSchemaSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
         props.put(AbstractKafkaSchemaSerDeConfig.USE_LATEST_VERSION, true);
-        props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://127.0.0.1:8081");
+        props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, SCHEMA_REGISTRY_URL);
         return props;
     }
 }
