@@ -1,9 +1,9 @@
-FROM maven:3-jdk-14
+FROM maven:3-amazoncorretto-16
 COPY  . /root/app/
 WORKDIR /root/app
-ARG PROTOC_ZIP=protoc-3.12.3-linux-x86_64.zip
+ARG PROTOC_ZIP=protoc-3.17.3-linux-x86_64.zip
 RUN yum -y install unzip &&\
-    curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/${PROTOC_ZIP} &&\
+    curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.17.3/${PROTOC_ZIP} &&\
     unzip -o ${PROTOC_ZIP} -d /usr/local bin/protoc &&\
     unzip -o ${PROTOC_ZIP} -d /usr/local 'include/*' &&\
     rm ${PROTOC_ZIP}
