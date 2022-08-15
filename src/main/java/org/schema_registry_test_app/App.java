@@ -2,6 +2,7 @@ package org.schema_registry_test_app;
 
 import org.schema_registry_test_app.avro.TestAvro;
 import org.schema_registry_test_app.json.TestJson;
+import org.schema_registry_test_app.proto.TestGoogle;
 import org.schema_registry_test_app.proto.TestProto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +20,12 @@ public class App {
         LOGGER = LoggerFactory.getLogger(App.class);
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         final long start = System.currentTimeMillis();
         try {
             TestAvro.produceOne();
             TestProto.produceOne();
+            TestGoogle.produceOne();
             TestJson.produceOne();
         } catch (ExecutionException | InterruptedException e) {
             LOGGER.error("Some error occurred", e);

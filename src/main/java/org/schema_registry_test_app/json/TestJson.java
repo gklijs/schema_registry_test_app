@@ -13,15 +13,15 @@ public class TestJson {
         //prevent instantiation
     }
 
-    private static List<Long> idList(){
+    private static List<Long> idList() {
         List<Long> integers = new ArrayList<>();
-        for(byte b : Utils.uuidBytes()){
+        for (byte b : Utils.uuidBytes()) {
             integers.add((long) b);
         }
         return integers;
     }
 
-    private static List<Result> resultList(){
+    private static List<Result> resultList() {
         Result result = new Result();
         result.setUp("STRING");
         result.setDown("string");
