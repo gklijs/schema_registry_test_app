@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package org.schema_registry_test_app.proto;
+import "google/type/color.proto";
+import "google/type/datetime.proto";
+import "google/type/money.proto";
+
+message GoogleTest {
+  google.type.Color color = 1;
+  google.type.DateTime dateTime = 2;
+  google.type.Money money = 3;
+  enum Language {
+    Java = 0;
+    Rust = 1;
+    Js = 2;
+    Python = 3;
+    Go = 4;
+    C = 5;
+  }
+  Language by = 4;
+  int64 counter = 5;
+}

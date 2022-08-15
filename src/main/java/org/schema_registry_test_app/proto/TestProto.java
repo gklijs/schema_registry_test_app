@@ -14,15 +14,15 @@ public class TestProto {
 
     private static Test.ProtoTest testValue() {
         return Test.ProtoTest.newBuilder()
-                                            .setId(ByteString.copyFrom(Utils.uuidBytes()))
-                                            .setCounter(1L)
-                                            .setInput("String")
-                                            .addResults(ResultOuterClass.Result.newBuilder()
-                                                                               .setUp("STRING")
-                                                                               .setDown("string")
-                                                                               .build())
-                                            .setBy(Test.ProtoTest.Language.Java)
-                                            .build();
+                .setId(ByteString.copyFrom(Utils.uuidBytes()))
+                .setCounter(1L)
+                .setInput("String")
+                .addResults(ResultOuterClass.Result.newBuilder()
+                        .setUp("STRING")
+                        .setDown("string")
+                        .build())
+                .setBy(Test.ProtoTest.Language.Java)
+                .build();
     }
 
     @SuppressWarnings("unchecked")

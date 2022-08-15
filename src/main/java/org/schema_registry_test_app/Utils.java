@@ -3,13 +3,10 @@ package org.schema_registry_test_app;
 import com.google.protobuf.GeneratedMessageV3;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import org.apache.avro.specific.SpecificRecord;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.schema_registry_test_app.proto.Google;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +23,7 @@ public class Utils {
     public static final String TEST_KEY = "testkey";
     public static final String TEST_TOPIC_AVRO = "testavro";
     public static final String TEST_TOPIC_PROTO = "testproto";
+    public static final String TEST_TOPIC_GOOGLE = "testgoogle";
     public static final String TEST_TOPIC_JSON = "testjson";
     public static final String SCHEMA_REGISTRY_URL = getSchemaRegistryUrl();
     public static final String BOOTSTRAP_SERVERS = getBootstrapServers();
@@ -34,12 +32,12 @@ public class Utils {
         //prevent instantiation
     }
 
-    private static String getSchemaRegistryUrl(){
+    private static String getSchemaRegistryUrl() {
         String fromEnv = System.getenv("SCHEMA_REGISTRY_URL");
         return Objects.requireNonNullElse(fromEnv, "http://127.0.0.1:8081");
     }
 
-    private static String getBootstrapServers(){
+    private static String getBootstrapServers() {
         String fromEnv = System.getenv("BOOTSTRAP_SERVERS");
         return Objects.requireNonNullElse(fromEnv, "localhost:9092");
     }
@@ -53,23 +51,25 @@ public class Utils {
     }
 
     public static <T extends O, O, S extends Serializer<O>> void produceOne(T item,
-            Class<S> serializerClass) throws ExecutionException, InterruptedException {
+                                                                            Class<S> serializerClass) throws ExecutionException, InterruptedException {
         if (item instanceof SpecificRecord) {
             produceOne(item, serializerClass, TEST_TOPIC_AVRO);
+        } else if (item instanceof Google.GoogleTest) {
+            produceOne(item, serializerClass, TEST_TOPIC_GOOGLE);
         } else if (item instanceof GeneratedMessageV3) {
             produceOne(item, serializerClass, TEST_TOPIC_PROTO);
-        } else{
+        } else {
             produceOne(item, serializerClass, TEST_TOPIC_JSON);
         }
     }
 
     public static <T extends O, O, S extends Serializer<O>> void produceOne(T item, Class<S> serializerClass,
-            String topic) throws ExecutionException, InterruptedException {
+                                                                            String topic) throws ExecutionException, InterruptedException {
         try (Producer<String, T> producer = new KafkaProducer<>(producerProperties(serializerClass))) {
             var record = new ProducerRecord<>(topic, TEST_KEY, item);
             RecordMetadata recordMetadata = producer.send(record).get();
             LOGGER.info("Produced test message with offset {} and value size {} to topic {}", recordMetadata.offset(),
-                        recordMetadata.serializedValueSize(), topic);
+                    recordMetadata.serializedValueSize(), topic);
         }
     }
 

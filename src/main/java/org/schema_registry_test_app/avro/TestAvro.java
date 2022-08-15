@@ -13,17 +13,17 @@ public class TestAvro {
 
     private static AvroTest testValue() {
         return AvroTest.newBuilder()
-                       .setId(new Uuid(Utils.uuidBytes()))
-                       .setCounter(1L)
-                       .setInput("String")
-                       .setResults(List.of(
-                               Result.newBuilder()
-                                     .setUp("STRING")
-                                     .setDown("string")
-                                     .build()
-                       ))
-                       .setBy(Language.Java)
-                       .build();
+                .setId(new Uuid(Utils.uuidBytes()))
+                .setCounter(1L)
+                .setInput("String")
+                .setResults(List.of(
+                        Result.newBuilder()
+                                .setUp("STRING")
+                                .setDown("string")
+                                .build()
+                ))
+                .setBy(Language.Java)
+                .build();
     }
 
     public static void produceOne() throws ExecutionException, InterruptedException {

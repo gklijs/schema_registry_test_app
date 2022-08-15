@@ -22,6 +22,7 @@
     <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
     <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
     <protobuf-maven.version>0.6.1</protobuf-maven.version>
+    <apache-kafka.version>3.2.1</apache-kafka.version>
 
     <schema-registry-url>http://127.0.0.1:8081</schema-registry-url>
   </properties>
@@ -45,8 +46,8 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.kafka</groupId>
-      <artifactId>kafka_2.12</artifactId>
-      <version>${confluent-platform.version}-ccs</version>
+      <artifactId>kafka-clients</artifactId>
+      <version>${apache-kafka.version}</version>
     </dependency>
     <dependency>
       <groupId>io.confluent</groupId>
@@ -100,6 +101,7 @@
             <testproto-value>src/main/proto/test.proto</testproto-value>
             <result.json>src/main/json/result.json</result.json>
             <testjson-value>src/main/json/jsontest.json</testjson-value>
+            <testgoogle-value>src/main/proto/google.proto</testgoogle-value>
           </subjects>
           <schemaTypes>
             <avro-result>AVRO</avro-result>
@@ -108,6 +110,7 @@
             <testproto-value>PROTOBUF</testproto-value>
             <result.json>JSON</result.json>
             <testjson-value>JSON</testjson-value>
+            <testgoogle-value>PROTOBUF</testgoogle-value>
           </schemaTypes>
           <references>
             <testavro-value>
