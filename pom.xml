@@ -102,8 +102,10 @@
             <testavroheader-value>src/main/avro/schemas.avsc</testavroheader-value>
             <result.proto>src/main/proto/result.proto</result.proto>
             <testproto-value>src/main/proto/test.proto</testproto-value>
+            <testprotoheader-value>src/main/proto/test.proto</testprotoheader-value>
             <result.json>src/main/json/result.json</result.json>
             <testjson-value>src/main/json/jsontest.json</testjson-value>
+            <testjsonheader-value>src/main/json/jsontest.json</testjsonheader-value>
             <testgoogle-value>src/main/proto/google.proto</testgoogle-value>
           </subjects>
           <schemaTypes>
@@ -112,8 +114,10 @@
             <testavroheader-value>AVRO</testavroheader-value>
             <result.proto>PROTOBUF</result.proto>
             <testproto-value>PROTOBUF</testproto-value>
+            <testprotoheader-value>PROTOBUF</testprotoheader-value>
             <result.json>JSON</result.json>
             <testjson-value>JSON</testjson-value>
+            <testjsonheader-value>JSON</testjsonheader-value>
             <testgoogle-value>PROTOBUF</testgoogle-value>
           </schemaTypes>
           <references>
@@ -135,12 +139,24 @@
                 <subject>result.proto</subject>
               </reference>
             </testproto-value>
+            <testprotoheader-value>
+              <reference>
+                <name>result.proto</name>
+                <subject>result.proto</subject>
+              </reference>
+            </testprotoheader-value>
             <testjson-value>
               <reference>
                 <name>result.json</name>
                 <subject>result.json</subject>
               </reference>
             </testjson-value>
+            <testjsonheader-value>
+              <reference>
+                <name>result.json</name>
+                <subject>result.json</subject>
+              </reference>
+            </testjsonheader-value>
           </references>
           <compatibilityLevels/>
           <previousSchemaPaths/>

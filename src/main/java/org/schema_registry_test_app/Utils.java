@@ -30,6 +30,8 @@ public class Utils {
     // Confluent Schema Registry 8.0+ guid. See
     // https://github.com/gklijs/schema_registry_converter/issues/139.
     public static final String TEST_TOPIC_AVRO_HEADER = "testavroheader";
+    public static final String TEST_TOPIC_PROTO_HEADER = "testprotoheader";
+    public static final String TEST_TOPIC_JSON_HEADER = "testjsonheader";
     public static final String SCHEMA_REGISTRY_URL = getSchemaRegistryUrl();
     public static final String BOOTSTRAP_SERVERS = getBootstrapServers();
 

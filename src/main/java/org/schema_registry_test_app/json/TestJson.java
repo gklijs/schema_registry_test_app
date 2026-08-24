@@ -42,4 +42,9 @@ public class TestJson {
     public static void produceOne() throws ExecutionException, InterruptedException {
         Utils.produceOne(testValue(), KafkaJsonSchemaSerializer.class);
     }
+
+    @SuppressWarnings("unchecked")
+    public static void produceOneWithHeaderId() throws ExecutionException, InterruptedException {
+        Utils.produceOneWithHeaderId(testValue(), KafkaJsonSchemaSerializer.class, Utils.TEST_TOPIC_JSON_HEADER);
+    }
 }

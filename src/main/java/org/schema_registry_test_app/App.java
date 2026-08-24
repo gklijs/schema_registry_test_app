@@ -26,8 +26,10 @@ public class App {
             TestAvro.produceOne();
             TestAvro.produceOneWithHeaderId();
             TestProto.produceOne();
+            TestProto.produceOneWithHeaderId();
             TestGoogle.produceOne();
             TestJson.produceOne();
+            TestJson.produceOneWithHeaderId();
         } catch (ExecutionException | InterruptedException e) {
             LOGGER.error("Some error occurred", e);
             Thread.currentThread().interrupt();
