@@ -1,6 +1,6 @@
 package org.schema_registry_test_app;
 
-import com.google.protobuf.GeneratedMessageV3;
+import com.google.protobuf.GeneratedMessage;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import io.confluent.kafka.serializers.schema.id.HeaderSchemaIdSerializer;
 import org.apache.avro.specific.SpecificRecord;
@@ -63,7 +63,7 @@ public class Utils {
             produceOne(item, serializerClass, TEST_TOPIC_AVRO);
         } else if (item instanceof Google.GoogleTest) {
             produceOne(item, serializerClass, TEST_TOPIC_GOOGLE);
-        } else if (item instanceof GeneratedMessageV3) {
+        } else if (item instanceof GeneratedMessage) {
             produceOne(item, serializerClass, TEST_TOPIC_PROTO);
         } else {
             produceOne(item, serializerClass, TEST_TOPIC_JSON);
