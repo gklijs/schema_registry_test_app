@@ -25,6 +25,12 @@
     <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
     <protobuf-maven.version>0.6.1</protobuf-maven.version>
     <apache-kafka.version>8.3.1-ccs</apache-kafka.version>
+    <!-- Must be >= the protoc version in the Dockerfile (currently v36.0): protobuf-java refuses
+         at class-load time to run gencode newer than itself (RuntimeVersionException). Without
+         this override, kafka-protobuf-serializer (via confluent-platform.version) pulls in
+         protobuf-java 4.34.0 transitively, which is older than protoc 36.0's gencode (4.36.0) and
+         crashes every run the moment a protoc-generated class (e.g. ProtoTest) is first touched. -->
+    <protobuf-java.version>4.36.0</protobuf-java.version>
 
     <schema-registry-url>http://127.0.0.1:8081</schema-registry-url>
   </properties>
@@ -65,6 +71,19 @@
       <groupId>io.confluent</groupId>
       <artifactId>kafka-json-schema-serializer</artifactId>
       <version>${confluent-platform.version}</version>
+    </dependency>
+
+    <!-- Direct declarations to override the older transitive versions pulled in by
+         kafka-protobuf-serializer above; see the comment on protobuf-java.version. -->
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf-java.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java-util</artifactId>
+      <version>${protobuf-java.version}</version>
     </dependency>
 
     <!--logging-->
