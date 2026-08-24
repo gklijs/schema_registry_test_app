@@ -29,4 +29,9 @@ public class TestProto {
     public static void produceOne() throws ExecutionException, InterruptedException {
         Utils.produceOne(testValue(), KafkaProtobufSerializer.class);
     }
+
+    @SuppressWarnings("unchecked")
+    public static void produceOneWithHeaderId() throws ExecutionException, InterruptedException {
+        Utils.produceOneWithHeaderId(testValue(), KafkaProtobufSerializer.class, Utils.TEST_TOPIC_PROTO_HEADER);
+    }
 }
