@@ -2,6 +2,7 @@ package org.schema_registry_test_app;
 
 import com.google.protobuf.GeneratedMessageV3;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
+import io.confluent.kafka.serializers.schema.id.HeaderSchemaIdSerializer;
 import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.Serializer;
@@ -25,6 +26,10 @@ public class Utils {
     public static final String TEST_TOPIC_PROTO = "testproto";
     public static final String TEST_TOPIC_GOOGLE = "testgoogle";
     public static final String TEST_TOPIC_JSON = "testjson";
+    // Schema id carried in a __value_schema_id header instead of the payload prefix, using a
+    // Confluent Schema Registry 8.0+ guid. See
+    // https://github.com/gklijs/schema_registry_converter/issues/139.
+    public static final String TEST_TOPIC_AVRO_HEADER = "testavroheader";
     public static final String SCHEMA_REGISTRY_URL = getSchemaRegistryUrl();
     public static final String BOOTSTRAP_SERVERS = getBootstrapServers();
 
@@ -73,6 +78,23 @@ public class Utils {
         }
     }
 
+    /**
+     * Like {@link #produceOne(Object, Class, String)}, but configures the value serializer to
+     * put the schema id/guid in a {@code __value_schema_id} header instead of the usual payload
+     * prefix, via {@link HeaderSchemaIdSerializer}. Requires a schema registry that returns a
+     * guid (Confluent Schema Registry 8.0+). See
+     * https://github.com/gklijs/schema_registry_converter/issues/139.
+     */
+    public static <T extends O, O, S extends Serializer<O>> void produceOneWithHeaderId(T item, Class<S> serializerClass,
+                                                                                          String topic) throws ExecutionException, InterruptedException {
+        try (Producer<String, T> producer = new KafkaProducer<>(producerPropertiesWithHeaderId(serializerClass))) {
+            var record = new ProducerRecord<>(topic, TEST_KEY, item);
+            RecordMetadata recordMetadata = producer.send(record).get();
+            LOGGER.info("Produced test message with offset {} and value size {} to topic {} using header schema id",
+                    recordMetadata.offset(), recordMetadata.serializedValueSize(), topic);
+        }
+    }
+
     private static <O, S extends Serializer<O>> Properties producerProperties(Class<S> serializerClass) {
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
@@ -81,6 +103,12 @@ public class Utils {
         props.put(AbstractKafkaSchemaSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
         props.put(AbstractKafkaSchemaSerDeConfig.USE_LATEST_VERSION, true);
         props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, SCHEMA_REGISTRY_URL);
+        return props;
+    }
+
+    private static <O, S extends Serializer<O>> Properties producerPropertiesWithHeaderId(Class<S> serializerClass) {
+        Properties props = producerProperties(serializerClass);
+        props.put(AbstractKafkaSchemaSerDeConfig.VALUE_SCHEMA_ID_SERIALIZER, HeaderSchemaIdSerializer.class.getName());
         return props;
     }
 }

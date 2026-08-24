@@ -29,4 +29,8 @@ public class TestAvro {
     public static void produceOne() throws ExecutionException, InterruptedException {
         Utils.produceOne(testValue(), KafkaAvroSerializer.class);
     }
+
+    public static void produceOneWithHeaderId() throws ExecutionException, InterruptedException {
+        Utils.produceOneWithHeaderId(testValue(), KafkaAvroSerializer.class, Utils.TEST_TOPIC_AVRO_HEADER);
+    }
 }
