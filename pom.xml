@@ -16,13 +16,15 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
 
-    <confluent-platform.version>7.2.1</confluent-platform.version>
+    <!-- 8.0+ is required for schema id in header support (guid wire format), see
+         https://github.com/gklijs/schema_registry_converter/issues/139 -->
+    <confluent-platform.version>8.3.1</confluent-platform.version>
 
     <avro-maven-plugin.version>1.11.1</avro-maven-plugin.version>
     <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
     <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
     <protobuf-maven.version>0.6.1</protobuf-maven.version>
-    <apache-kafka.version>5.3.0-ccs</apache-kafka.version>
+    <apache-kafka.version>8.3.1-ccs</apache-kafka.version>
 
     <schema-registry-url>http://127.0.0.1:8081</schema-registry-url>
   </properties>
@@ -97,6 +99,7 @@
           <subjects>
             <avro-result>src/main/avro/result.avsc</avro-result>
             <testavro-value>src/main/avro/schemas.avsc</testavro-value>
+            <testavroheader-value>src/main/avro/schemas.avsc</testavroheader-value>
             <result.proto>src/main/proto/result.proto</result.proto>
             <testproto-value>src/main/proto/test.proto</testproto-value>
             <result.json>src/main/json/result.json</result.json>
@@ -106,6 +109,7 @@
           <schemaTypes>
             <avro-result>AVRO</avro-result>
             <testavro-value>AVRO</testavro-value>
+            <testavroheader-value>AVRO</testavroheader-value>
             <result.proto>PROTOBUF</result.proto>
             <testproto-value>PROTOBUF</testproto-value>
             <result.json>JSON</result.json>
@@ -119,6 +123,12 @@
                 <subject>avro-result</subject>
               </reference>
             </testavro-value>
+            <testavroheader-value>
+              <reference>
+                <name>org.schema_registry_test_app.avro.Result</name>
+                <subject>avro-result</subject>
+              </reference>
+            </testavroheader-value>
             <testproto-value>
               <reference>
                 <name>result.proto</name>

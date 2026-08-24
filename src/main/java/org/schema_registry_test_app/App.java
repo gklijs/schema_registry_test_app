@@ -24,6 +24,7 @@ public class App {
         final long start = System.currentTimeMillis();
         try {
             TestAvro.produceOne();
+            TestAvro.produceOneWithHeaderId();
             TestProto.produceOne();
             TestGoogle.produceOne();
             TestJson.produceOne();
